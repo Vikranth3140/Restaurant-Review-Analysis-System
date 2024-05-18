@@ -4,7 +4,7 @@ Sentiment Analysis Platform is a Flask-based web application that offers sentime
 
 The user interface is designed with simplicity in mind, utilizing [Bootstrap CSS](https://getbootstrap.com/) to ensure a clean and responsive design.
 
-Live Demo ---> [Render](https://nltk-web-app.onrender.com)
+Live Demo ---> [Render](https://sentiment-analysis-platform.onrender.com)
 
 ![intro img](img\intro.png)
 
