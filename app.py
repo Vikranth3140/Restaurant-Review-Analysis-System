@@ -1,12 +1,15 @@
-from flask import Flask, request, render_template
+from flask import Flask, request, render_template, jsonify
 from nltk.sentiment.vader import SentimentIntensityAnalyzer
 from textblob import TextBlob
 import nltk
+import datetime
 
 # Download necessary NLTK data
 nltk.download('vader_lexicon')
 
 app = Flask(__name__)
+
+reviews = []
 
 def analyze_aspects(text):
     aspects = {
@@ -39,7 +42,7 @@ def generate_summary(aspect_scores):
 
 @app.route('/')
 def index():
-    return render_template('index.html')
+    return render_template('index.html', reviews=reviews)
 
 @app.route('/process', methods=['POST'])
 def process():
@@ -53,9 +56,21 @@ def process():
     aspect_scores = analyze_aspects(input_text)
     aspect_summaries = generate_summary(aspect_scores)
     
+    review = {
+        'text': input_text,
+        'sentiment_scores': sentiment_scores,
+        'textblob_polarity': textblob_polarity,
+        'textblob_subjectivity': textblob_subjectivity,
+        'aspect_scores': aspect_scores,
+        'aspect_summaries': aspect_summaries,
+        'date': datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    }
+    reviews.append(review)
+    
     return render_template('index.html', sentiment_scores=sentiment_scores, 
                            textblob_polarity=textblob_polarity, textblob_subjectivity=textblob_subjectivity,
-                           aspect_scores=aspect_scores, aspect_summaries=aspect_summaries, input_text=input_text)
+                           aspect_scores=aspect_scores, aspect_summaries=aspect_summaries, input_text=input_text,
+                           reviews=reviews)
 
 if __name__ == '__main__':
     app.run(debug=True)
