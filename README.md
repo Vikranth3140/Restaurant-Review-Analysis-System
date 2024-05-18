@@ -6,6 +6,8 @@ The user interface is designed with simplicity in mind, utilizing [Bootstrap CSS
 
 Live Demo ---> [Render](https://nltk-web-app.onrender.com)
 
+![intro img](img\intro.png)
+
 
 ## Features
 
