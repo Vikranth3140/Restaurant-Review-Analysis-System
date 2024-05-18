@@ -15,20 +15,16 @@ def index():
 @app.route('/process', methods=['POST'])
 def process():
     input_text = request.form['inputText']
-    option = request.form['option']
     
-    if option == 'Sentiment':
-        sid = SentimentIntensityAnalyzer()
-        sentiment_scores = sid.polarity_scores(input_text)
-        textblob_analysis = TextBlob(input_text)
-        textblob_polarity = textblob_analysis.sentiment.polarity
-        textblob_subjectivity = textblob_analysis.sentiment.subjectivity
-        
-        return render_template('index.html', sentiment_scores=sentiment_scores, 
-                               textblob_polarity=textblob_polarity, textblob_subjectivity=textblob_subjectivity,
-                               input_text=input_text)
+    sid = SentimentIntensityAnalyzer()
+    sentiment_scores = sid.polarity_scores(input_text)
+    textblob_analysis = TextBlob(input_text)
+    textblob_polarity = textblob_analysis.sentiment.polarity
+    textblob_subjectivity = textblob_analysis.sentiment.subjectivity
     
-    return render_template('index.html', error_message="Invalid option selected.")
+    return render_template('index.html', sentiment_scores=sentiment_scores, 
+                           textblob_polarity=textblob_polarity, textblob_subjectivity=textblob_subjectivity,
+                           input_text=input_text)
 
 if __name__ == '__main__':
     app.run(debug=True)
