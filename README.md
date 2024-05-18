@@ -6,7 +6,7 @@ The user interface is designed with simplicity in mind, utilizing [Bootstrap CSS
 
 Live Demo ---> [Render](https://sentiment-analysis-platform.onrender.com)
 
-![intro img](img\intro.png)
+![intro img](img/intro.png)
 
 
 ## Features
