@@ -1,0 +1,5 @@
+Flask
+nltk
+numpy
+gunicorn
+Werkzeug
