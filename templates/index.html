@@ -5,39 +5,79 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sentiment Analysis Platform</title>
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
     <div class="container">
         <h1 class="mt-4">Sentiment Analysis Platform</h1>
+        
         <form method="post" action="/process">
             <div class="form-group">
                 <label for="textInput">Enter Text:</label>
                 <textarea class="form-control" id="textInput" name="inputText" rows="4"></textarea>
             </div>
-            <input type="hidden" name="option" value="Sentiment">
+            <div class="form-group">
+                <label for="optionSelect">Choose Option:</label>
+                <select class="form-control" id="optionSelect" name="option">
+                    <option value="Sentiment">Sentiment Analysis</option>
+                </select>
+            </div>
             <button type="submit" class="btn btn-primary">Analyze Sentiment</button>
         </form>
-        {% if sentiment_scores %}
+        
         <div id="sentimentResult" class="mt-4">
-            <h3>Sentiment Analysis Results:</h3>
-            <h4>VADER Sentiment Scores:</h4>
-            <p>Positive: {{ sentiment_scores.vader.pos }}</p>
-            <p>Negative: {{ sentiment_scores.vader.neg }}</p>
-            <p>Neutral: {{ sentiment_scores.vader.neu }}</p>
-            <p>Compound: {{ sentiment_scores.vader.compound }}</p>
-            <h4>TextBlob Sentiment Analysis:</h4>
-            <p>Polarity: {{ sentiment_scores.textblob.polarity }}</p>
-            <p>Subjectivity: {{ sentiment_scores.textblob.subjectivity }}</p>
+            {% if sentiment_scores %}
+                <h3>Sentiment Analysis Results:</h3>
+                <p>VADER Sentiment Scores:</p>
+                <ul>
+                    <li>Positive: {{ sentiment_scores.pos }}</li>
+                    <li>Negative: {{ sentiment_scores.neg }}</li>
+                    <li>Neutral: {{ sentiment_scores.neu }}</li>
+                    <li>Compound: {{ sentiment_scores.compound }}</li>
+                </ul>
+                <div id="sentimentChartContainer" class="mt-4">
+                    <canvas id="sentimentChart"></canvas>
+                </div>
+            {% endif %}
         </div>
-        {% endif %}
-        {% if error_message %}
-        <div id="errorMessage" class="mt-4">
-            <div class="alert alert-danger" role="alert">
-                {{ error_message }}
-            </div>
-        </div>
-        {% endif %}
+        
+        <script>
+            {% if sentiment_scores %}
+                var ctx = document.getElementById('sentimentChart').getContext('2d');
+                var sentimentChart = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: ['Positive', 'Negative', 'Neutral', 'Compound'],
+                        datasets: [{
+                            label: 'Sentiment Scores',
+                            data: [{{ sentiment_scores.pos }}, {{ sentiment_scores.neg }}, {{ sentiment_scores.neu }}, {{ sentiment_scores.compound }}],
+                            backgroundColor: [
+                                'rgba(75, 192, 192, 0.2)',
+                                'rgba(255, 99, 132, 0.2)',
+                                'rgba(255, 206, 86, 0.2)',
+                                'rgba(153, 102, 255, 0.2)'
+                            ],
+                            borderColor: [
+                                'rgba(75, 192, 192, 1)',
+                                'rgba(255, 99, 132, 1)',
+                                'rgba(255, 206, 86, 1)',
+                                'rgba(153, 102, 255, 1)'
+                            ],
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        scales: {
+                            y: {
+                                beginAtZero: true
+                            }
+                        }
+                    }
+                });
+            {% endif %}
+        </script>
     </div>
+
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
