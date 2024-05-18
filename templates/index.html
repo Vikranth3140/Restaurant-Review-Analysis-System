@@ -35,6 +35,11 @@
                     <li>Neutral: {{ sentiment_scores.neu }}</li>
                     <li>Compound: {{ sentiment_scores.compound }}</li>
                 </ul>
+                <p>TextBlob Sentiment Analysis:</p>
+                <ul>
+                    <li>Polarity: {{ textblob_polarity }}</li>
+                    <li>Subjectivity: {{ textblob_subjectivity }}</li>
+                </ul>
                 <div id="sentimentChartContainer" class="mt-4">
                     <canvas id="sentimentChart"></canvas>
                 </div>

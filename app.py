@@ -1,5 +1,6 @@
 from flask import Flask, request, render_template
 from nltk.sentiment.vader import SentimentIntensityAnalyzer
+from textblob import TextBlob
 import nltk
 
 # Download necessary NLTK data
@@ -19,7 +20,13 @@ def process():
     if option == 'Sentiment':
         sid = SentimentIntensityAnalyzer()
         sentiment_scores = sid.polarity_scores(input_text)
-        return render_template('index.html', sentiment_scores=sentiment_scores, input_text=input_text)
+        textblob_analysis = TextBlob(input_text)
+        textblob_polarity = textblob_analysis.sentiment.polarity
+        textblob_subjectivity = textblob_analysis.sentiment.subjectivity
+        
+        return render_template('index.html', sentiment_scores=sentiment_scores, 
+                               textblob_polarity=textblob_polarity, textblob_subjectivity=textblob_subjectivity,
+                               input_text=input_text)
     
     return render_template('index.html', error_message="Invalid option selected.")
 
