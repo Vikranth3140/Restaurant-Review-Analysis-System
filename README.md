@@ -1,16 +1,47 @@
-# NLTK Web App
+# Sentiment Analysis Platform
 
-NLTK Web App is a Flask web application provides various natural language processing (NLP) functionalities using [NLTK (Natural Language Toolkit)](https://www.nltk.org/) in Python. It allows users to perform tasks such as tokenization, POS tagging, named entity recognition (NER), sentiment analysis, word frequency analysis, concordance, WordNet integration, and chunking on input text.
+Sentiment Analysis Platform is a Flask-based web application that offers sentiment analysis functionality using the [Natural Language Toolkit (NLTK)](https://www.nltk.org/) and [TextBlob](https://textblob.readthedocs.io/en/dev/) in Python. This application allows users to analyze the sentiment of input text, providing detailed insights into its positive, negative, neutral, and compound sentiment scores.
 
-Please note that the UI is kept relatively simpler with [Bootstrap CSS](https://getbootstrap.com/).
+The user interface is designed with simplicity in mind, utilizing [Bootstrap CSS](https://getbootstrap.com/) to ensure a clean and responsive design.
 
 Live Demo ---> [Render](https://nltk-web-app.onrender.com)
 
 
 ## Features
 
-- **Sentiment Analysis**: Determines the sentiment of the input text (positive, negative, neutral).
+- **Sentiment Analysis**: Determines the sentiment of the input text (positive, negative, neutral) using VADER and TextBlob.
+- **Polarity and Subjectivity**: Provides detailed polarity and subjectivity scores to indicate the sentiment strength and objectivity of the text.
+- **Visualization**: Displays sentiment scores using interactive charts for better understanding.
 
+
+### Sentiment Analysis Details
+
+
+#### Positive, Negative, Neutral, and Compound Scores
+- **Positive**: Indicates the proportion of positive sentiment in the text.
+- **Negative**: Indicates the proportion of negative sentiment in the text.
+- **Neutral**: Indicates the proportion of neutral sentiment in the text.
+- **Compound**: A single score that combines the positive, negative, and neutral scores to provide an overall sentiment. It ranges from -1 (most extreme negative) to 1 (most extreme positive).
+
+#### Polarity
+- **Definition**: Polarity measures the sentiment expressed in a text, indicating whether the expressed opinion is positive, negative, or neutral.
+- **Range**: The polarity score is a float within the range of -1.0 to 1.0.
+  - **-1.0**: Indicates a very negative sentiment.
+  - **0.0**: Indicates a neutral sentiment.
+  - **1.0**: Indicates a very positive sentiment.
+- **Interpretation**:
+  - A polarity score closer to 1 indicates positive sentiment.
+  - A polarity score closer to -1 indicates negative sentiment.
+  - A polarity score around 0 indicates neutral sentiment.
+
+#### Subjectivity
+- **Definition**: Subjectivity measures the degree to which a text is subjective or objective.
+- **Range**: The subjectivity score is a float within the range of 0.0 to 1.0.
+  - **0.0**: Indicates the text is very objective.
+  - **1.0**: Indicates the text is very subjective.
+- **Interpretation**:
+  - A subjectivity score closer to 1 indicates the text contains personal opinions, emotions, or judgments.
+  - A subjectivity score closer to 0 indicates the text is more factual and objective.
 
 ## Example Usage
 
@@ -44,10 +75,9 @@ Live Demo ---> [Render](https://nltk-web-app.onrender.com)
    My experience with the customer service team was mostly frustrating. They were slow to respond and didn't resolve my issue initially. However, one representative was very helpful and eventually fixed the problem. Despite the overall poor service, I appreciated that individual’s effort.
    ```
 
-
 ## Project Structure
 
-    NLTK-Web-App/
+    Sentiment-Analysis-Platform/
     │
     ├── app.py              # Flask application code
     ├── templates/          # HTML templates
@@ -55,33 +85,30 @@ Live Demo ---> [Render](https://nltk-web-app.onrender.com)
     ├── README.md           # Project overview and instructions
     └── requirements.txt    # Python dependencies
 
-
 - `app.py`: Main Flask application file containing route definitions and NLP functionalities.
 - `index.html`: HTML template for the web interface.
 - `requirements.txt`: List of Python dependencies required to run the application.
-
 
 ## How to Use
 
 1. Clone the repository to your local machine.
     ```bash
-    git clone https://github.com/Vikranth3140/NLTK-Web-App.git
+    git clone https://github.com/Vikranth3140/Sentiment-Analysis-Platform.git
     ```
 
-2. Install the required Python dependencies
+2. Install the required Python dependencies.
     ```bash
     pip install -r requirements.txt
     ```
 
-3. Run the Flask application with
+3. Run the Flask application.
     ```bash
     python app.py
     ```
 
 4. Open the web interface in your browser (usually at `http://localhost:5000`).
 
-5. Click on `Analyze Sentiment` to see the results displayed on the web page.
-
+5. Enter your text in the provided text box and click on `Analyze Sentiment` to see the results displayed on the web page.
 
 ## License
 
