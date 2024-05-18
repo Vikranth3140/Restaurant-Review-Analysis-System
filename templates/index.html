@@ -3,148 +3,43 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NLTK Web App</title>
+    <title>Sentiment Analysis Platform</title>
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
     <div class="container">
-        <h1 class="mt-4">NLTK Web App</h1>
-        
-        <!-- Text Input and Form Submission -->
+        <h1 class="mt-4">Sentiment Analysis Platform</h1>
         <form method="post" action="/process">
             <div class="form-group">
                 <label for="textInput">Enter Text:</label>
                 <textarea class="form-control" id="textInput" name="inputText" rows="4"></textarea>
             </div>
-            <div class="form-group">
-                <label for="optionSelect">Choose Option:</label>
-                <select class="form-control" id="optionSelect" name="option">
-                    <option value="Tokenize">Tokenize</option>
-                    <option value="PosTag">POS Tagging</option>
-                    <option value="NER">NER</option>
-                    <option value="Sentiment">Sentiment Analysis</option>
-                    <option value="WordFreq">Word Frequency Analysis</option>
-                    <option value="Concordance">Concordance</option>
-                    <option value="WordNet">WordNet Integration</option>
-                    <option value="Chunking">Chunking</option>
-                    <option value="All">All</option>
-                </select>
-            </div>
-            <!-- Additional input for Concordance, WordNet, and Chunking -->
-            <div class="form-group" id="keywordInput" style="display:none;">
-                <label for="keyword">Keyword:</label>
-                <input type="text" class="form-control" id="keyword" name="keyword">
-            </div>
-            <button type="submit" class="btn btn-primary">Submit</button>
+            <input type="hidden" name="option" value="Sentiment">
+            <button type="submit" class="btn btn-primary">Analyze Sentiment</button>
         </form>
-        
-        <!-- Tokenized Text Display -->
-        <div id="tokenizedText" class="mt-4">
-            {% if tokenized_text %}
-                <h3>Tokenized Text (Without Stopwords):</h3>
-                <p>{{ tokenized_text }}</p>
-            {% endif %}
-        </div>
-        
-        <!-- POS Tagged Text Display -->
-        <div id="posTaggedText" class="mt-4">
-            {% if pos_tagged_text %}
-                <h3>POS Tagged Text:</h3>
-                <p>{{ pos_tagged_text }}</p>
-            {% endif %}
-        </div>
-        
-        <!-- NER Result Display -->
-        <div id="nerResult" class="mt-4">
-            {% if ner_result %}
-                <h3>Named Entities:</h3>
-                <ul>
-                    {% for label, entities in ner_result.items() %}
-                        <li>{{ label }}: {{ entities }}</li>
-                    {% endfor %}
-                </ul>
-            {% endif %}
-        </div>
-        
-        <!-- Sentiment Analysis Result Display -->
+        {% if sentiment_scores %}
         <div id="sentimentResult" class="mt-4">
-            {% if sentiment_scores %}
-                <h3>Sentiment Scores:</h3>
-                <p>Positive: {{ sentiment_scores.pos }}</p>
-                <p>Negative: {{ sentiment_scores.neg }}</p>
-                <p>Neutral: {{ sentiment_scores.neu }}</p>
-                <p>Compound: {{ sentiment_scores.compound }}</p>
-            {% endif %}
+            <h3>Sentiment Analysis Results:</h3>
+            <h4>VADER Sentiment Scores:</h4>
+            <p>Positive: {{ sentiment_scores.vader.pos }}</p>
+            <p>Negative: {{ sentiment_scores.vader.neg }}</p>
+            <p>Neutral: {{ sentiment_scores.vader.neu }}</p>
+            <p>Compound: {{ sentiment_scores.vader.compound }}</p>
+            <h4>TextBlob Sentiment Analysis:</h4>
+            <p>Polarity: {{ sentiment_scores.textblob.polarity }}</p>
+            <p>Subjectivity: {{ sentiment_scores.textblob.subjectivity }}</p>
         </div>
-
-        <!-- Word Frequency Analysis Result Display -->
-        <div id="wordFreqResult" class="mt-4">
-            {% if word_freq %}
-                <h3>Word Frequency Analysis:</h3>
-                <ul>
-                    {% for word, freq in word_freq %}
-                        <li>{{ word }}: {{ freq }}</li>
-                    {% endfor %}
-                </ul>
-            {% endif %}
-        </div>
-
-        <!-- Concordance Result Display -->
-        <div id="concordanceResult" class="mt-4">
-            {% if concordance_list %}
-                <h3>Concordance for '{{ keyword }}':</h3>
-                <ul>
-                    {% for context in concordance_list %}
-                        <li>{{ context }}</li>
-                    {% endfor %}
-                </ul>
-            {% endif %}
-        </div>
-
-        <!-- WordNet Integration Result Display -->
-        <div id="wordnetResult" class="mt-4">
-            {% if wordnet_info %}
-                <h3>WordNet Information for '{{ keyword }}':</h3>
-                <p><strong>Definition:</strong> {{ wordnet_info['Definition'] }}</p>
-                <p><strong>Examples:</strong> {{ wordnet_info['Examples'] }}</p>
-                <p><strong>Hypernyms:</strong> {{ wordnet_info['Hypernyms'] }}</p>
-                <p><strong>Hyponyms:</strong> {{ wordnet_info['Hyponyms'] }}</p>
-                <p><strong>Holonyms:</strong> {{ wordnet_info['Holonyms'] }}</p>
-                <p><strong>Meronyms:</strong> {{ wordnet_info['Meronyms'] }}</p>
-            {% endif %}
-        </div>
-
-        <!-- Chunking Result Display -->
-        <div id="chunkedResult" class="mt-4">
-            {% if chunked_tree %}
-                <h3>Chunked Phrases:</h3>
-                {{ chunked_tree }}
-            {% endif %}
-        </div>
-
-        <!-- Error Message Display -->
+        {% endif %}
+        {% if error_message %}
         <div id="errorMessage" class="mt-4">
-            {% if error_message %}
-                <div class="alert alert-danger" role="alert">
-                    {{ error_message }}
-                </div>
-            {% endif %}
+            <div class="alert alert-danger" role="alert">
+                {{ error_message }}
+            </div>
         </div>
+        {% endif %}
     </div>
-
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-    <script>
-        // Show/hide keyword input for Concordance, WordNet, and Chunking based on option selection
-        $('#optionSelect').change(function() {
-            var option = $(this).val();
-            if (option == 'Concordance' || option == 'WordNet' || option == 'Chunking') {
-                $('#keywordInput').show();
-            } else {
-                $('#keywordInput').hide();
-            }
-        });
-    </script>
 </body>
 </html>
