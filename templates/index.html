@@ -34,6 +34,16 @@
                     <li>Polarity: {{ textblob_polarity }}</li>
                     <li>Subjectivity: {{ textblob_subjectivity }}</li>
                 </ul>
+                <h4>Aspect-Based Sentiment Analysis:</h4>
+                {% for aspect, scores in aspect_scores.items() %}
+                    <p>{{ aspect.capitalize() }}:</p>
+                    <ul>
+                        <li>Positive: {{ scores.pos }}</li>
+                        <li>Negative: {{ scores.neg }}</li>
+                        <li>Neutral: {{ scores.neu }}</li>
+                        <li>Compound: {{ scores.compound }}</li>
+                    </ul>
+                {% endfor %}
                 <div id="sentimentChartContainer" class="mt-4">
                     <canvas id="sentimentChart"></canvas>
                 </div>
