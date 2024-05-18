@@ -34,10 +34,34 @@
                     <li>Polarity: {{ textblob_polarity }}</li>
                     <li>Subjectivity: {{ textblob_subjectivity }}</li>
                 </ul>
+                <h4>Aspect-Based Sentiment Analysis:</h4>
+                {% for aspect, scores in aspect_scores.items() %}
+                    <p>{{ aspect.capitalize() }}:</p>
+                    <ul>
+                        <li>Positive: {{ scores.pos }}</li>
+                        <li>Negative: {{ scores.neg }}</li>
+                        <li>Neutral: {{ scores.neu }}</li>
+                        <li>Compound: {{ scores.compound }}</li>
+                    </ul>
+                    <p>{{ aspect_summaries[aspect] }}</p>
+                {% endfor %}
                 <div id="sentimentChartContainer" class="mt-4">
                     <canvas id="sentimentChart"></canvas>
                 </div>
             {% endif %}
+        </div>
+
+        <div id="reviewsContainer" class="mt-4">
+            <h3>Customer Reviews</h3>
+            <ul>
+                {% for review in reviews %}
+                    <li>
+                        <p><strong>{{ review.date }}</strong></p>
+                        <p>{{ review.text }}</p>
+                        <p>Overall Sentiment: {{ review.sentiment_scores.compound }}</p>
+                    </li>
+                {% endfor %}
+            </ul>
         </div>
         
         <script>
