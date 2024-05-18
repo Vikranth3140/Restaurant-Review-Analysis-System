@@ -43,6 +43,7 @@
                         <li>Neutral: {{ scores.neu }}</li>
                         <li>Compound: {{ scores.compound }}</li>
                     </ul>
+                    <p>{{ aspect_summaries[aspect] }}</p>
                 {% endfor %}
                 <div id="sentimentChartContainer" class="mt-4">
                     <canvas id="sentimentChart"></canvas>
