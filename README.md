@@ -1,74 +1,85 @@
-# NLTK Web App
+# Sentiment Analysis Platform
 
-NLTK Web App is a Flask web application provides various natural language processing (NLP) functionalities using [NLTK (Natural Language Toolkit)](https://www.nltk.org/) in Python. It allows users to perform tasks such as tokenization, POS tagging, named entity recognition (NER), sentiment analysis, word frequency analysis, concordance, WordNet integration, and chunking on input text.
+Sentiment Analysis Platform is a Flask-based web application that offers sentiment analysis functionality using the [Natural Language Toolkit (NLTK)](https://www.nltk.org/) and [TextBlob](https://textblob.readthedocs.io/en/dev/) in Python. This application allows users to analyze the sentiment of input text, providing detailed insights into its positive, negative, neutral, and compound sentiment scores.
 
-Please note that the UI is kept relatively simpler with [Bootstrap CSS](https://getbootstrap.com/).
+The user interface is designed with simplicity in mind, utilizing [Bootstrap CSS](https://getbootstrap.com/) to ensure a clean and responsive design.
 
 Live Demo ---> [Render](https://nltk-web-app.onrender.com)
+
+![intro img](img\intro.png)
 
 
 ## Features
 
-- **Tokenization**: Breaks input text into individual tokens or words.
-- **Stopwords Removal**: Filters out common stopwords from the input text.
-- **POS Tagging**: Assigns parts of speech tags to tokens (e.g., nouns, verbs, adjectives).
-- **Named Entity Recognition (NER)**: Identifies named entities such as persons, organizations, and locations.
-- **Sentiment Analysis**: Determines the sentiment of the input text (positive, negative, neutral).
-- **Word Frequency Analysis**: Counts the frequency of words in the input text.
-- **Concordance**: Finds and displays contexts surrounding a specified keyword in the input text.
-- **WordNet Integration**: Retrieves information about words from WordNet, including definitions, examples, hypernyms, hyponyms, holonyms, and meronyms.
-- **Chunking**: Groups tokens into chunks based on specified patterns (e.g., noun phrases).
+- **Sentiment Analysis**: Determines the sentiment of the input text (positive, negative, neutral) using VADER and TextBlob.
+- **Polarity and Subjectivity**: Provides detailed polarity and subjectivity scores to indicate the sentiment strength and objectivity of the text.
+- **Visualization**: Displays sentiment scores using interactive charts for better understanding.
 
+
+### Sentiment Analysis Details
+
+
+#### Positive, Negative, Neutral, and Compound Scores
+- **Positive**: Indicates the proportion of positive sentiment in the text.
+- **Negative**: Indicates the proportion of negative sentiment in the text.
+- **Neutral**: Indicates the proportion of neutral sentiment in the text.
+- **Compound**: A single score that combines the positive, negative, and neutral scores to provide an overall sentiment. It ranges from -1 (most extreme negative) to 1 (most extreme positive).
+
+#### Polarity
+- **Definition**: Polarity measures the sentiment expressed in a text, indicating whether the expressed opinion is positive, negative, or neutral.
+- **Range**: The polarity score is a float within the range of -1.0 to 1.0.
+  - **-1.0**: Indicates a very negative sentiment.
+  - **0.0**: Indicates a neutral sentiment.
+  - **1.0**: Indicates a very positive sentiment.
+- **Interpretation**:
+  - A polarity score closer to 1 indicates positive sentiment.
+  - A polarity score closer to -1 indicates negative sentiment.
+  - A polarity score around 0 indicates neutral sentiment.
+
+#### Subjectivity
+- **Definition**: Subjectivity measures the degree to which a text is subjective or objective.
+- **Range**: The subjectivity score is a float within the range of 0.0 to 1.0.
+  - **0.0**: Indicates the text is very objective.
+  - **1.0**: Indicates the text is very subjective.
+- **Interpretation**:
+  - A subjectivity score closer to 1 indicates the text contains personal opinions, emotions, or judgments.
+  - A subjectivity score closer to 0 indicates the text is more factual and objective.
 
 ## Example Usage
 
-- **Tokenization:**
-  - **Input:** "NLTK Web App is awesome."
-  - **Output:** "NLTK Web App is awesome."
+1. **Positive Sentiment**:
+   ```
+   I had an amazing experience at the new restaurant in town. The food was absolutely delicious, and the staff were incredibly friendly and attentive. The ambiance was perfect, with a cozy atmosphere that made me feel right at home. I can't wait to go back again soon!
+   ```
 
-- **Stopwords Removal:**
-  - **Input:** "NLTK Web App is awesome."
-  - **Output:** "NLTK Web App awesome."
+2. **Negative Sentiment**:
+   ```
+   I had a terrible experience at the new restaurant in town. The food was bland and tasteless, and the staff were rude and inattentive. The ambiance was awful, with loud music and uncomfortable seating. I will never go back there again.
+   ```
 
-- **POS Tagging:**
-  - **Input:** "NLTK Web App is awesome."
-  - **Output:** "NLTK (NNP) Web (NNP) App (NNP) is (VBZ) awesome (JJ) . (.)"
+3. **Neutral Sentiment**:
+   ```
+   I visited the new restaurant in town. The food was okay, nothing special, but not bad either. The staff were decent and did their job. The ambiance was average, not too exciting but not uncomfortable. Overall, it was a typical dining experience.
+   ```
 
-- **NER:**
-  - **Input:** "NLTK Web App is developed by John Doe."
-  - **Output:** "PERSON: John Doe"
+4. **Mixed Sentiment**:
+   ```
+   I recently watched a movie that left me feeling very conflicted. On one hand, the acting was superb, and the cinematography was breathtaking. The lead actor delivered an outstanding performance that truly brought the character to life. On the other hand, the storyline felt a bit disjointed and confusing at times. There were plot holes that were never addressed, and the ending left a lot to be desired. Overall, I have mixed feelings about the movie. While I enjoyed the visual and acting aspects, the story left me feeling unsatisfied.
+   ```
 
-- **Sentiment Analysis:**
-  - **Input:** "NLTK Web App is awesome."
-  - **Output:** "Positive: 1.0, Negative: 0.0, Neutral: 0.0, Compound: 0.6249"
+5. **Positive with Subtle Negative Aspects**:
+   ```
+   The vacation to the mountains was wonderful. The scenery was breathtaking, and the weather was perfect. The only downside was the long drive to get there, which was a bit exhausting. However, the beautiful landscapes and fresh mountain air made it all worth it.
+   ```
 
-- **Word Frequency Analysis:**
-  - **Input:** "NLTK Web App is awesome. NLTK is powerful."
-  - **Output:** "NLTK: 2, Web: 1, App: 1, awesome: 1, powerful: 1"
-
-- **Concordance:**
-  - **Input:** "NLTK Web App is awesome."
-  - **Keyword:** "Web"
-  - **Output:** "NLTK Web App"
-
-- **WordNet Integration:**
-  - **Input:** "awesome"
-  - **Output:** 
-    - **Definition:** "extremely impressive or daunting; inspiring awe."
-    - **Examples:** "the awesome power of the atomic bomb"
-    - **Hypernyms:** "impressive"
-    - **Hyponyms:** "amazing, awful, awing"
-    - **Holonyms:** ""
-    - **Meronyms:** ""
-
-- **Chunking:**
-  - **Input:** "The quick brown fox jumps over the lazy dog."
-  - **Output:** (S (NP The/DT quick/JJ brown/JJ fox/NN) (VP jumps/VBZ) (PP over/IN) (NP the/DT lazy/JJ dog/NN) ./.)
-
+6. **Negative with Positive Aspects**:
+   ```
+   My experience with the customer service team was mostly frustrating. They were slow to respond and didn't resolve my issue initially. However, one representative was very helpful and eventually fixed the problem. Despite the overall poor service, I appreciated that individual’s effort.
+   ```
 
 ## Project Structure
 
-    NLTK-Web-App/
+    Sentiment-Analysis-Platform/
     │
     ├── app.py              # Flask application code
     ├── templates/          # HTML templates
@@ -76,35 +87,30 @@ Live Demo ---> [Render](https://nltk-web-app.onrender.com)
     ├── README.md           # Project overview and instructions
     └── requirements.txt    # Python dependencies
 
-
 - `app.py`: Main Flask application file containing route definitions and NLP functionalities.
 - `index.html`: HTML template for the web interface.
 - `requirements.txt`: List of Python dependencies required to run the application.
-
 
 ## How to Use
 
 1. Clone the repository to your local machine.
     ```bash
-    git clone https://github.com/Vikranth3140/NLTK-Web-App.git
+    git clone https://github.com/Vikranth3140/Sentiment-Analysis-Platform.git
     ```
 
-2. Install the required Python dependencies
+2. Install the required Python dependencies.
     ```bash
     pip install -r requirements.txt
     ```
 
-3. Run the Flask application with
+3. Run the Flask application.
     ```bash
     python app.py
     ```
 
 4. Open the web interface in your browser (usually at `http://localhost:5000`).
 
-5. Enter text in the input field and choose the desired NLP task from the dropdown menu.
-
-6. Submit the form to see the results displayed on the web page.
-
+5. Enter your text in the provided text box and click on `Analyze Sentiment` to see the results displayed on the web page.
 
 ## License
 

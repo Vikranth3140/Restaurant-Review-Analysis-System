@@ -3,3 +3,5 @@ nltk
 numpy
 gunicorn
 Werkzeug
+textblob
+vaderSentiment
