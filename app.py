@@ -5,11 +5,16 @@ import nltk
 import datetime
 import pandas as pd
 import plotly.express as px
+import os
 
 # Download necessary NLTK data
 nltk.download('vader_lexicon')
 
 app = Flask(__name__)
+
+UPLOAD_FOLDER = 'uploads'
+os.makedirs(UPLOAD_FOLDER, exist_ok=True)
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 reviews = []
 
@@ -74,10 +79,51 @@ def process():
                            aspect_scores=aspect_scores, aspect_summaries=aspect_summaries, input_text=input_text,
                            reviews=reviews)
 
+@app.route('/upload', methods=['GET', 'POST'])
+def upload_file():
+    if request.method == 'POST':
+        if 'file' not in request.files:
+            return 'No file part'
+        file = request.files['file']
+        if file.filename == '':
+            return 'No selected file'
+        if file:
+            file_path = os.path.join(app.config['UPLOAD_FOLDER'], file.filename)
+            file.save(file_path)
+            process_file(file_path)
+            return render_template('index.html', reviews=reviews)
+    return render_template('upload.html')
+
+def process_file(file_path):
+    with open(file_path, 'r') as file:
+        lines = file.readlines()
+        for line in lines:
+            line = line.strip()
+            if line:
+                sid = SentimentIntensityAnalyzer()
+                sentiment_scores = sid.polarity_scores(line)
+                textblob_analysis = TextBlob(line)
+                textblob_polarity = textblob_analysis.sentiment.polarity
+                textblob_subjectivity = textblob_analysis.sentiment.subjectivity
+                aspect_scores = analyze_aspects(line)
+                aspect_summaries = generate_summary(aspect_scores)
+                
+                review = {
+                    'text': line,
+                    'sentiment_scores': sentiment_scores,
+                    'textblob_polarity': textblob_polarity,
+                    'textblob_subjectivity': textblob_subjectivity,
+                    'aspect_scores': aspect_scores,
+                    'aspect_summaries': aspect_summaries,
+                    'date': datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                }
+                reviews.append(review)
+
 @app.route('/dashboard')
 def dashboard():
     df = pd.DataFrame(reviews)
     if not df.empty:
+        df['date'] = pd.to_datetime(df['date'])
         fig = px.line(df, x='date', y=[review['sentiment_scores']['compound'] for review in reviews], title='Sentiment Over Time')
         graphJSON = fig.to_json()
     else:
