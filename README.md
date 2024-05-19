@@ -6,12 +6,9 @@ The user-friendly interface ensures easy navigation and understanding of the sen
 
 The user interface is designed with simplicity in mind, utilizing [Bootstrap CSS](https://getbootstrap.com/) to ensure a clean and responsive design.
 
-Live Demo ---> [Render](https://sentiment-analysis-platform.onrender.com)
+Live Demo ---> [Render](https://restaurant-review-analysis-system-xe67.onrender.com)
 
 ![intro img](img/intro.png)
-
-
-
 
 ## Features
 
