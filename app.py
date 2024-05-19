@@ -3,6 +3,8 @@ from nltk.sentiment.vader import SentimentIntensityAnalyzer
 from textblob import TextBlob
 import nltk
 import datetime
+import pandas as pd
+import plotly.express as px
 
 # Download necessary NLTK data
 nltk.download('vader_lexicon')
@@ -71,6 +73,16 @@ def process():
                            textblob_polarity=textblob_polarity, textblob_subjectivity=textblob_subjectivity,
                            aspect_scores=aspect_scores, aspect_summaries=aspect_summaries, input_text=input_text,
                            reviews=reviews)
+
+@app.route('/dashboard')
+def dashboard():
+    df = pd.DataFrame(reviews)
+    if not df.empty:
+        fig = px.line(df, x='date', y=[review['sentiment_scores']['compound'] for review in reviews], title='Sentiment Over Time')
+        graphJSON = fig.to_json()
+    else:
+        graphJSON = None
+    return render_template('dashboard.html', graphJSON=graphJSON)
 
 if __name__ == '__main__':
     app.run(debug=True)

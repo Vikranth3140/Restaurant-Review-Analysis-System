@@ -6,6 +6,7 @@
     <title>Sentiment Analysis Platform</title>
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 </head>
 <body>
     <div class="container">
@@ -62,6 +63,17 @@
                     </li>
                 {% endfor %}
             </ul>
+        </div>
+
+        <div id="dashboardContainer" class="mt-4">
+            <h3>Analytics Dashboard</h3>
+            {% if graphJSON %}
+                <div id="dashboard"></div>
+                <script>
+                    var graphJSON = {{ graphJSON|safe }};
+                    Plotly.newPlot('dashboard', graphJSON.data, graphJSON.layout);
+                </script>
+            {% endif %}
         </div>
         
         <script>
