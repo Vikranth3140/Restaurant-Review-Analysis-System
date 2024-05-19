@@ -1,6 +1,7 @@
 Flask
 nltk
 numpy
+pandas
 gunicorn
 Werkzeug
 textblob
