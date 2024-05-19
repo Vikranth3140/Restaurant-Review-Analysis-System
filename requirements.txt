@@ -6,3 +6,4 @@ gunicorn
 Werkzeug
 textblob
 vaderSentiment
+plotly
